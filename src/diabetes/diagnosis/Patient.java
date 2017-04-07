@@ -1,5 +1,7 @@
 package diabetes.diagnosis;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -13,16 +15,11 @@ public class Patient {
 	private StringProperty firstName;
 	private StringProperty lastName;
 	private StringProperty gender;
-	private StringProperty peselCode;
+	private StringProperty peselNumber;
 	private StringProperty insurance;
+	private BooleanProperty examined;
 	private Examination examination;
-	
-	/**
-	 * Konstruktor domyślny
-	 */
-	public Patient() {
-		this(null, null, null, null, null, false, 0.0, false, 0.0);
-	}
+
 	/**
 	 * Konstruktor
 	 * 
@@ -37,14 +34,13 @@ public class Patient {
      * @param poziom cukru w moczu
 	 */
 	public Patient(String firstName, String lastName, String gender,
-			String peselCode, String insurance, boolean examined,
-			double bloodGlucose, boolean ghb, double sugarInUrine) {
+			String peselNumber, String insurance) {
 		this.firstName = new SimpleStringProperty(firstName);
 		this.lastName = new SimpleStringProperty(lastName);
 		this.gender = new SimpleStringProperty(gender);
-		this.peselCode = new SimpleStringProperty(peselCode);
+		this.peselNumber = new SimpleStringProperty(peselNumber);
 		this.insurance = new SimpleStringProperty(insurance);
-		this.examination = new Examination(examined, bloodGlucose, ghb, sugarInUrine);
+		this.examined = new SimpleBooleanProperty(false);
 	}
 	
 	/**
@@ -113,22 +109,22 @@ public class Patient {
 	/**
 	 * @return pesel
 	 */
-	public String getPeselCode() {
-		return peselCode.get();
+	public String getPeselNumber() {
+		return peselNumber.get();
 	}
 	
 	/**
 	 * @param pesel
 	 */
-	public void setPeselCode(String peselCode) {
-		this.peselCode.set(peselCode);
+	public void setPeselNumber(String peselNumber) {
+		this.peselNumber.set(peselNumber);
 	}
 	
 	/**
 	 * @return uchwyt na pole płeć
 	 */
-	public StringProperty peselCodeProperty() {
-		return peselCode;
+	public StringProperty peselNumberProperty() {
+		return peselNumber;
 	}
 	
 	/**
@@ -151,6 +147,27 @@ public class Patient {
 	public StringProperty insuranceProperty() {
 		return insurance;
 	}
+
+	/**
+	 * @return czy badanie się odbyło
+	 */
+	public Boolean isExamined() {
+		return examined.get();
+	}
+
+	/**
+	 * @param czy badanie się odbyło
+	 */
+	public void setExamined(boolean exam) {
+		this.examined.set(exam);
+	}
+
+	/**
+	 * @return uchwyt na pole czy badanie się odbyło
+	 */
+	public BooleanProperty examinedProperty() {
+		return examined;
+	}
 	
 	/**
 	 * @return uchwyt na pole badanie
@@ -165,11 +182,8 @@ public class Patient {
      * @param obecność glikowanej hemoglobiny GHB
      * @param poziom cukru w moczu
 	 */
-	public void setExamination(boolean examined, double bloodGlucose,
-			boolean ghb, double sugarInUrine) {
-		this.examination.setExamined(examined);
-		this.examination.setBloodGlucose(bloodGlucose);
-		this.examination.setGhb(ghb);
-		this.examination.setSugarInUrine(sugarInUrine);
+	public void setExamination(Examination examination) {
+		this.examination = examination;
+		this.setExamined(true);
 	}
 }

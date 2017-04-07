@@ -5,6 +5,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
+import java.time.LocalDate;
+
 
 /**
  * @author kubanowsky
@@ -13,17 +15,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public class Examination {
 
-	private BooleanProperty examined;
+	private LocalDate examinationDate;
 	private DoubleProperty bloodGlucose;
 	private BooleanProperty ghb;
-	private DoubleProperty sugarInUrine;
-	
-    /**
-     * Konstruktor domyślny
-     */
-	public Examination () {
-		this(false, 0.0, false, 0.0);
-	}
+	private DoubleProperty sugarLvl;
 
     /**
      * Konstruktor
@@ -33,34 +28,16 @@ public class Examination {
      * @param obecność glikowanej hemoglobiny GHB
      * @param poziom cukru w moczu
      */
-	public Examination(boolean examined, double bloodGlucose,
-			boolean ghb, double sugarInUrine) {
-		this.examined = new SimpleBooleanProperty(examined);
-		this.bloodGlucose = new SimpleDoubleProperty(bloodGlucose);
+	public Examination(LocalDate examinationDate, boolean ghb,
+					   double bloodGlucose, double sugarLvl) {
+		this.examinationDate = examinationDate;
 		this.ghb = new SimpleBooleanProperty(ghb);
-		this.sugarInUrine = new SimpleDoubleProperty(sugarInUrine);
+		this.bloodGlucose = new SimpleDoubleProperty(bloodGlucose);
+		this.sugarLvl = new SimpleDoubleProperty(sugarLvl);
 	}
-	
-	/**
-	 * @return czy badanie się odbyło
-	 */
-	public Boolean getExamined() {
-		return examined.get();
-	}
-	
-	/**
-	 * @param czy badanie się odbyło
-	 */
-	public void setExamined(boolean exam) {
-		this.examined.set(exam);
-	}
-	
-	/**
-	 * @return uchwyt na pole czy badanie się odbyło
-	 */
-	public BooleanProperty examinedProperty() {
-		return examined;
-	}
+
+	public LocalDate getExaminationDate() { return examinationDate; }
+	public void setExaminationDate(LocalDate examinationDate) { this.examinationDate=examinationDate; }
 	
 	/**
 	 * @return stężenie glukozy we krwi
@@ -107,21 +84,21 @@ public class Examination {
 	/**
 	 * @return poziom cukru w moczu
 	 */
-	public Double getSugarInUrine() {
-		return sugarInUrine.get();
+	public Double getSugarLvl() {
+		return sugarLvl.get();
 	}
 	
 	/**
 	 * @param poziom cukru w moczu
 	 */
-	public void setSugarInUrine(double sugar) {
-		this.sugarInUrine.set(sugar);
+	public void setSugarLvl(double sugar) {
+		this.sugarLvl.set(sugar);
 	}
 	
 	/**
 	 * @return uchwyt na pole examined
 	 */
-	public DoubleProperty sugarInUrineProperty() {
-		return sugarInUrine;
+	public DoubleProperty sugarLvlProperty() {
+		return sugarLvl;
 	}
 }
