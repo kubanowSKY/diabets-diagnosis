@@ -24,34 +24,36 @@ public class Controller {
 
         //Buttons handlers initializations
         patientFormView.getSaveBtn().setOnAction((event) -> {
-            Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
-            if (selected != null){
-                selected.setFirstName(patientFormView.getFirstNameField().getText().toString());
-                selected.setLastName(patientFormView.getLastNameField().getText().toString());
-                selected.setGender(patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString());
-                selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
-                selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
+        if (validateData()) {
+                Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    selected.setFirstName(patientFormView.getFirstNameField().getText().toString());
+                    selected.setLastName(patientFormView.getLastNameField().getText().toString());
+                    selected.setGender(patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString());
+                    selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
+                    selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
 
-                clearPatientForm();
-                patientTableView.getPatientTable().getSelectionModel().clearSelection();
-                disableInputMode();
+                    clearPatientForm();
+                    patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                    disableInputMode();
+                }
+                else {
+                    Patient patient = new Patient(
+                            patientFormView.getFirstNameField().getText().toString(),
+                            patientFormView.getLastNameField().getText().toString(),
+                            patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString(),
+                            patientFormView.getPeselNumberField().getText().toString(),
+                            patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString()
+                    );
+
+                    patientList.getPatientsList().add(patient);
+                    patientTableView.getPatientTable().setItems(patientList.getPatientsList());
+
+                    // clear form after addition1
+                    clearPatientForm();
+                }
+                //disableInputMode();
             }
-            else {
-                Patient patient = new Patient(
-                        patientFormView.getFirstNameField().getText().toString(),
-                        patientFormView.getLastNameField().getText().toString(),
-                        patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString(),
-                        patientFormView.getPeselNumberField().getText().toString(),
-                        patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString()
-                );
-
-                patientList.getPatientsList().add(patient);
-                patientTableView.getPatientTable().setItems(patientList.getPatientsList());
-
-                // clear form after addition
-                clearPatientForm();
-            }
-            //disableInputMode();
         });
 
         patientFormView.getCancelBtn().setOnAction((event) -> {
@@ -142,6 +144,18 @@ public class Controller {
             //clearPatientForm();
             //clearExaminationForm();
         }
+    }
+
+    // TODO!!! NIE DZIAŁA
+    private boolean validateData() {
+    if(patientFormView.getPeselNumberField().getLength() != 11) { return false; }
+        for(Patient patient: patientList.getPatientsList()) {
+            if (patientFormView.getPeselNumberField().getText() == patient.getPeselNumber()) {
+                return false;
+            }
+        }
+
+    return true;
     }
 
     void clearPatientForm() {

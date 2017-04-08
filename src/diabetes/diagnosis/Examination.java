@@ -22,11 +22,11 @@ public class Examination {
 
     /**
      * Konstruktor
-     * 
-     * @param czy badanie się odbyło
-     * @param stężenie glukozy we krwi
-     * @param obecność glikowanej hemoglobiny GHB
-     * @param poziom cukru w moczu
+     *
+     * @param examinationDate data badania
+     * @param ghb obecność glikowanej hemoglobiny GHB stężenie glukozy we krwi
+     * @param bloodGlucose stężenie glukozy we krwi
+     * @param sugarLvl poziom cukru w moczu
      */
 	public Examination(LocalDate examinationDate, boolean ghb,
 					   double bloodGlucose, double sugarLvl) {
@@ -38,63 +38,63 @@ public class Examination {
 
 	public LocalDate getExaminationDate() { return examinationDate; }
 	public void setExaminationDate(LocalDate examinationDate) { this.examinationDate=examinationDate; }
-	
+
 	/**
 	 * @return stężenie glukozy we krwi
 	 */
 	public Double getBloodGlucose() {
 		return bloodGlucose.get();
 	}
-	
+
 	/**
-	 * @param stężenie glukozy we krwi
+	 * @param glucose stężenie glukozy we krwi
 	 */
 	public void setBloodGlucose(double glucose) {
 		this.bloodGlucose.set(glucose);
 	}
-	
+
 	/**
 	 * @return uchwyt na pole ze stężeniem glukozy we krwi
 	 */
 	public DoubleProperty bloodGlucoseProperty() {
 		return bloodGlucose;
 	}
-	
+
 	/**
 	 * @return obecność glikowanej hemoglobiny GHB
 	 */
 	public Boolean getGhb() {
 		return ghb.get();
 	}
-	
+
 	/**
-	 * @param obecność glikowanej hemoglobiny GHB
+	 * @param hemoglobinGhb obecność glikowanej hemoglobiny GHB
 	 */
 	public void setGhb(boolean hemoglobinGhb) {
 		this.ghb.set(hemoglobinGhb);
 	}
-	
+
 	/**
 	 * @return uchwyt na pole obecności glikowanej hemoglobiny GHB
 	 */
 	public BooleanProperty ghbProperty() {
 		return ghb;
 	}
-	
+
 	/**
 	 * @return poziom cukru w moczu
 	 */
 	public Double getSugarLvl() {
 		return sugarLvl.get();
 	}
-	
+
 	/**
-	 * @param poziom cukru w moczu
+	 * @param sugar poziom cukru w moczu
 	 */
 	public void setSugarLvl(double sugar) {
 		this.sugarLvl.set(sugar);
 	}
-	
+
 	/**
 	 * @return uchwyt na pole examined
 	 */

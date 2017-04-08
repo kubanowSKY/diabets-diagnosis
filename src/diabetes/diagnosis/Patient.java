@@ -51,7 +51,7 @@ public class Patient {
 	}
 	
 	/**
-	 * @param imię
+	 * @param firstName imię
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName.set(firstName);
@@ -68,11 +68,11 @@ public class Patient {
 	 * @return nazwisko
 	 */
 	public String getLastName() {
-		return firstName.get();
+		return lastName.get();
 	}
 	
 	/**
-	 * @param nazwisko
+	 * @param lastName nazwisko
 	 */
 	public void setLastName(String lastName) {
 		this.lastName.set(lastName);
@@ -93,7 +93,7 @@ public class Patient {
 	}
 	
 	/**
-	 * @param płeć
+	 * @param gender płeć
 	 */
 	public void setGender(String gender) {
 		this.gender.set(gender);
@@ -114,7 +114,7 @@ public class Patient {
 	}
 	
 	/**
-	 * @param pesel
+	 * @param peselNumber pesel
 	 */
 	public void setPeselNumber(String peselNumber) {
 		this.peselNumber.set(peselNumber);
@@ -135,7 +135,7 @@ public class Patient {
 	}
 	
 	/**
-	 * @param imię
+	 * @param insurance ubezpieczenie
 	 */
 	public void setInsurance(String insurance) {
 		this.insurance.set(insurance);
@@ -156,7 +156,7 @@ public class Patient {
 	}
 
 	/**
-	 * @param czy badanie się odbyło
+	 * @param exam czy badanie się odbyło
 	 */
 	public void setExamined(boolean exam) {
 		this.examined.set(exam);
@@ -177,10 +177,7 @@ public class Patient {
 	}
 	
 	/**
-     * @param czy badanie się odbyło
-     * @param stężenie glukozy we krwi
-     * @param obecność glikowanej hemoglobiny GHB
-     * @param poziom cukru w moczu
+     * @param examination obiekt klasy Examination
 	 */
 	public void setExamination(Examination examination) {
 		this.examination = examination;

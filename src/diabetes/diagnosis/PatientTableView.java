@@ -1,6 +1,7 @@
 package diabetes.diagnosis;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -57,7 +58,7 @@ public class PatientTableView extends VBox {
         examinedColumn = new TableColumn<Patient, Boolean>("Badanie");
         examinedColumn.setMaxWidth(3000);
 
-        nameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName() + " " + cellData.getValue().getLastName()));
         genderColumn.setCellValueFactory(cellData -> cellData.getValue().genderProperty());
         peselColumn.setCellValueFactory(cellData -> cellData.getValue().peselNumberProperty());
         insuranceColumn.setCellValueFactory(cellData -> cellData.getValue().insuranceProperty());

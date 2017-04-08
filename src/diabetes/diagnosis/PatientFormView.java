@@ -1,5 +1,10 @@
 package diabetes.diagnosis;
 
+import java.text.DecimalFormat;
+import java.text.ParsePosition;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.RadioButton;
@@ -17,6 +22,7 @@ import javafx.scene.text.Text;
  */
 public class PatientFormView extends GridPane {
 
+    final private DecimalFormat numberFormat;
     private TextField firstNameField;
     private TextField lastNameField;
     private TextField peselNumberField;
@@ -52,6 +58,8 @@ public class PatientFormView extends GridPane {
 
     public PatientFormView() {
 
+        numberFormat = new DecimalFormat("#.0");
+
         createAndConfigurePane();
 
         createAndLayoutControls();
@@ -60,12 +68,54 @@ public class PatientFormView extends GridPane {
     private void createAndLayoutControls() {
         firstNameLabel = new Label("Imię:");
         firstNameField = new TextField();
+        firstNameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if(firstNameField.getText().matches(".*\\d+.*")) {
+                      firstNameField.setText(oldValue);
+                }
+             }
+        });
 
         lastNameLabel = new Label("Nazwisko:");
         lastNameField = new TextField();
+        lastNameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if(lastNameField.getText().matches(".*\\d+.*")) {
+                      lastNameField.setText(oldValue);
+                }
+             }
+        });
 
         peselNumberLabel = new Label("PESEL:");
         peselNumberField = new TextField();
+
+        //
+        peselNumberField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (peselNumberField.getText().length() > 11) {
+                    String s = peselNumberField.getText().substring(0, 11);
+                    peselNumberField.setText(s);
+                }
+            }
+        });
+
+        peselNumberField.setTextFormatter(new TextFormatter<>(c -> {
+            if (c.getControlNewText().isEmpty()) { return c; }
+            ParsePosition parsePosition = new ParsePosition( 0 );
+            Object object = numberFormat.parse(c.getControlNewText(), parsePosition);
+
+            if ( object == null || parsePosition.getIndex() < c.getControlNewText().length() )
+            {
+                return null;
+            }
+            else
+            {
+                return c;
+            }
+        }));
 
         genderLabel = new Label("Płeć");
         femaleBtn = new RadioButton("Kobieta");
