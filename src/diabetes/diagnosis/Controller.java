@@ -1,5 +1,7 @@
 package diabetes.diagnosis;
 
+import javafx.scene.control.Alert;
+
 /**
  * Created by Sowul.
  */
@@ -24,6 +26,7 @@ public class Controller {
 
         //Buttons handlers initializations
         patientFormView.getSaveBtn().setOnAction((event) -> {
+<<<<<<< HEAD
             reloadFields();
             if (validateData()) {
                 Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
@@ -39,6 +42,23 @@ public class Controller {
                     disableInputMode();
                 }
                 else {
+=======
+            System.out.println("patientFormView Save clicked");
+            Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                selected.setFirstName(patientFormView.getFirstNameField().getText().toString());
+                selected.setLastName(patientFormView.getLastNameField().getText().toString());
+                selected.setGender(patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString());
+                selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
+                selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
+
+                //clearPatientForm();
+                //patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                //disableInputMode();
+            }
+            else {
+                if (validatePesel()){
+>>>>>>> wip
                     Patient patient = new Patient(
                             patientFormView.getFirstNameField().getText().toString(),
                             patientFormView.getLastNameField().getText().toString(),
@@ -50,22 +70,36 @@ public class Controller {
                     patientList.getPatientsList().add(patient);
                     patientTableView.getPatientTable().setItems(patientList.getPatientsList());
 
-                    // clear form after addition1
-                    clearPatientForm();
+                    patientTableView.getPatientTable().requestFocus();
+                    patientTableView.getPatientTable().getSelectionModel().selectLast();
+                    patientTableView.getPatientTable().getFocusModel().focus(-1);
+
+                    // clear form after addition
+                    //clearPatientForm();
                 }
-                //disableInputMode();
+                else {
+                    System.out.println("Źle wprowadzony lub zduplikowany PESEL");
+                    patientFormView.getPeselNumberField().setText("");
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Źle wprowadzony lub zduplikowany PESEL");
+                    alert.showAndWait();
+                }
             }
+            //disableInputMode();
         });
 
         patientFormView.getCancelBtn().setOnAction((event) -> {
             System.out.println("patientFormView Cancel clicked");
-            clearPatientForm();
-            clearExaminationForm();
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
-            disableInputMode();
+            clearPatientForm();
+            //clearExaminationForm();
+            //disableInputMode();
         });
 
         examinationFormView.getSaveBtn().setOnAction((event) -> {
+<<<<<<< HEAD
             reloadFields();
             // TODO!!! nie działa
             if(validateExamination()) {
@@ -83,12 +117,30 @@ public class Controller {
                 patientTableView.getPatientTable().getSelectionModel().clearSelection();
                 disableInputMode();
             }
+=======
+            System.out.println("examinationFormView Save clicked");
+            Examination examination = new Examination(
+                    examinationFormView.getDatePicker().getValue(),
+                    examinationFormView.getGhbCheckBox().isSelected(),
+                    Double.parseDouble(examinationFormView.getBloodGlucoseField().getText().toString()),
+                    Double.parseDouble(examinationFormView.getSugarLvlField().getText().toString())
+            );
+
+            patientTableView.getPatientTable().getSelectionModel().getSelectedItem().setExamination(examination);
+            clearExaminationForm();
+            clearPatientForm();
+            patientTableView.getPatientTable().refresh();
+            patientTableView.getPatientTable().getSelectionModel().clearSelection();
+            disableInputMode();
+>>>>>>> wip
         });
 
         examinationFormView.getCancelBtn().setOnAction((event) -> {
+            System.out.println("examinationFormView Cancel clicked");
+            patientTableView.getPatientTable().getSelectionModel().clearSelection();
             clearExaminationForm();
-            clearPatientForm();
-            disableInputMode();
+            //clearPatientForm();
+            //disableInputMode();
         });
 
         patientTableView.getAddBtn().setOnAction((event) -> {
@@ -98,6 +150,7 @@ public class Controller {
             clearExaminationForm();
             enableInputMode();
         });
+
         patientTableView.getDeleteBtn().setOnAction((event) -> {
             System.out.println("patientTableView Delete clicked");
             disableInputMode();
@@ -151,6 +204,7 @@ public class Controller {
         }
     }
 
+<<<<<<< HEAD
     private boolean validateData() {
         boolean valid = true;
         if(patientFormView.getFirstNameField().getLength() == 0) {
@@ -177,8 +231,23 @@ public class Controller {
             if (patientFormView.getPeselNumberField().getText().equals(patient.getPeselNumber())) {
                 patientFormView.getPeselNumberField().setStyle("-fx-border-color: red;");
                 valid = false;
-            }
+=======
+    private boolean validatePesel() {
+        Boolean validated = true;
+        if(patientFormView.getPeselNumberField().getLength() != 11) {
+            return false;
         }
+        else {
+            for (Patient patient : patientList.getPatientsList()){
+                if (patient.getPeselNumber().equals(patientFormView.getPeselNumberField().getText().toString())){
+                    validated = false;
+                    break;
+                }
+>>>>>>> wip
+            }
+            return validated;
+        }
+<<<<<<< HEAD
 
         return valid;
     }
@@ -196,6 +265,8 @@ public class Controller {
         }
 
         return valid;
+=======
+>>>>>>> wip
     }
 
     void clearPatientForm() {
