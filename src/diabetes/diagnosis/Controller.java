@@ -1,5 +1,7 @@
 package diabetes.diagnosis;
 
+import javafx.scene.control.Alert;
+
 /**
  * Created by Sowul.
  */
@@ -24,20 +26,21 @@ public class Controller {
 
         //Buttons handlers initializations
         patientFormView.getSaveBtn().setOnAction((event) -> {
-        if (validateData()) {
-                Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
-                if (selected != null) {
-                    selected.setFirstName(patientFormView.getFirstNameField().getText().toString());
-                    selected.setLastName(patientFormView.getLastNameField().getText().toString());
-                    selected.setGender(patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString());
-                    selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
-                    selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
+            System.out.println("patientFormView Save clicked");
+            Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                selected.setFirstName(patientFormView.getFirstNameField().getText().toString());
+                selected.setLastName(patientFormView.getLastNameField().getText().toString());
+                selected.setGender(patientFormView.getGenderToggleGroup().getSelectedToggle().getUserData().toString());
+                selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
+                selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
 
-                    clearPatientForm();
-                    patientTableView.getPatientTable().getSelectionModel().clearSelection();
-                    disableInputMode();
-                }
-                else {
+                //clearPatientForm();
+                //patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                //disableInputMode();
+            }
+            else {
+                if (validatePesel()){
                     Patient patient = new Patient(
                             patientFormView.getFirstNameField().getText().toString(),
                             patientFormView.getLastNameField().getText().toString(),
@@ -49,22 +52,36 @@ public class Controller {
                     patientList.getPatientsList().add(patient);
                     patientTableView.getPatientTable().setItems(patientList.getPatientsList());
 
-                    // clear form after addition1
-                    clearPatientForm();
+                    patientTableView.getPatientTable().requestFocus();
+                    patientTableView.getPatientTable().getSelectionModel().selectLast();
+                    patientTableView.getPatientTable().getFocusModel().focus(-1);
+
+                    // clear form after addition
+                    //clearPatientForm();
                 }
-                //disableInputMode();
+                else {
+                    System.out.println("Źle wprowadzony lub zduplikowany PESEL");
+                    patientFormView.getPeselNumberField().setText("");
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Źle wprowadzony lub zduplikowany PESEL");
+                    alert.showAndWait();
+                }
             }
+            //disableInputMode();
         });
 
         patientFormView.getCancelBtn().setOnAction((event) -> {
             System.out.println("patientFormView Cancel clicked");
-            clearPatientForm();
-            clearExaminationForm();
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
-            disableInputMode();
+            clearPatientForm();
+            //clearExaminationForm();
+            //disableInputMode();
         });
 
         examinationFormView.getSaveBtn().setOnAction((event) -> {
+            System.out.println("examinationFormView Save clicked");
             Examination examination = new Examination(
                     examinationFormView.getDatePicker().getValue(),
                     examinationFormView.getGhbCheckBox().isSelected(),
@@ -81,9 +98,11 @@ public class Controller {
         });
 
         examinationFormView.getCancelBtn().setOnAction((event) -> {
+            System.out.println("examinationFormView Cancel clicked");
+            patientTableView.getPatientTable().getSelectionModel().clearSelection();
             clearExaminationForm();
-            clearPatientForm();
-            disableInputMode();
+            //clearPatientForm();
+            //disableInputMode();
         });
 
         patientTableView.getAddBtn().setOnAction((event) -> {
@@ -93,6 +112,7 @@ public class Controller {
             clearExaminationForm();
             enableInputMode();
         });
+
         patientTableView.getDeleteBtn().setOnAction((event) -> {
             System.out.println("patientTableView Delete clicked");
             disableInputMode();
@@ -146,16 +166,20 @@ public class Controller {
         }
     }
 
-    // TODO!!! NIE DZIAŁA
-    private boolean validateData() {
-    if(patientFormView.getPeselNumberField().getLength() != 11) { return false; }
-        for(Patient patient: patientList.getPatientsList()) {
-            if (patientFormView.getPeselNumberField().getText() == patient.getPeselNumber()) {
-                return false;
-            }
+    private boolean validatePesel() {
+        Boolean validated = true;
+        if(patientFormView.getPeselNumberField().getLength() != 11) {
+            return false;
         }
-
-    return true;
+        else {
+            for (Patient patient : patientList.getPatientsList()){
+                if (patient.getPeselNumber().equals(patientFormView.getPeselNumberField().getText().toString())){
+                    validated = false;
+                    break;
+                }
+            }
+            return validated;
+        }
     }
 
     void clearPatientForm() {
