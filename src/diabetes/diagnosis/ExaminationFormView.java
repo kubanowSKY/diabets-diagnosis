@@ -1,5 +1,7 @@
 package diabetes.diagnosis;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -83,9 +85,25 @@ public class ExaminationFormView extends GridPane {
 
         bloodGlucoseLabel = new Label("Stężenie glukozy we krwi:");
         bloodGlucoseField = new TextField();
+        bloodGlucoseField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if(bloodGlucoseField.getText().matches("[aA-zZ]")) {
+                      bloodGlucoseField.setText(oldValue);
+                }
+             }
+        });
 
         sugarLvlLabel = new Label("Poziom cukru w moczu:");
         sugarLvlField = new TextField();
+        sugarLvlField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if(sugarLvlField.getText().matches("[aA-zZ]")) {
+                    sugarLvlField.setText(oldValue);
+                }
+             }
+        });
 
         saveBtn = new Button("Zapisz");
         cancelBtn = new Button("Anuluj");

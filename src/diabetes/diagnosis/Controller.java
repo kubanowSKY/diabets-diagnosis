@@ -24,7 +24,8 @@ public class Controller {
 
         //Buttons handlers initializations
         patientFormView.getSaveBtn().setOnAction((event) -> {
-        if (validateData()) {
+            reloadFields();
+            if (validateData()) {
                 Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
                 if (selected != null) {
                     selected.setFirstName(patientFormView.getFirstNameField().getText().toString());
@@ -146,16 +147,36 @@ public class Controller {
         }
     }
 
-    // TODO!!! NIE DZIAŁA
     private boolean validateData() {
-    if(patientFormView.getPeselNumberField().getLength() != 11) { return false; }
+        boolean valid = true;
+        if(patientFormView.getFirstNameField().getLength() == 0) {
+            patientFormView.getFirstNameField().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
+        if(patientFormView.getLastNameField().getLength() == 0) {
+            patientFormView.getLastNameField().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
+        if(patientFormView.getPeselNumberField().getLength() != 11) {
+            patientFormView.getPeselNumberField().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
+        if(!(patientFormView.getMaleBtn().isSelected() || patientFormView.getFemaleBtn().isSelected())) {
+            patientFormView.getGenderLabel().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
+        if(patientFormView.getInsuranceComboBox().getSelectionModel().isEmpty()) {
+            patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
         for(Patient patient: patientList.getPatientsList()) {
-            if (patientFormView.getPeselNumberField().getText() == patient.getPeselNumber()) {
-                return false;
+            if (patientFormView.getPeselNumberField().getText().equals(patient.getPeselNumber())) {
+                patientFormView.getPeselNumberField().setStyle("-fx-border-color: red;");
+                valid = false;
             }
         }
 
-    return true;
+        return valid;
     }
 
     void clearPatientForm() {
@@ -207,5 +228,13 @@ public class Controller {
         examinationFormView.getSugarLvlField().setDisable(true);
         examinationFormView.getSaveBtn().setDisable(true);
         examinationFormView.getCancelBtn().setDisable(true);
+    }
+
+    private void reloadFields() {
+        patientFormView.getFirstNameField().setStyle("-fx-border-color: ;");
+        patientFormView.getLastNameField().setStyle("-fx-border-color: ;");
+        patientFormView.getPeselNumberField().setStyle("-fx-border-color: ;");
+        patientFormView.getGenderLabel().setStyle("-fx-border-color: ;");
+        patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: ;");
     }
 }

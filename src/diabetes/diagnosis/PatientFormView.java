@@ -39,6 +39,8 @@ public class PatientFormView extends GridPane {
     public ToggleGroup getGenderToggleGroup() { return genderToggleGroup; }
     public ComboBox getInsuranceComboBox() { return insuranceComboBox; }
 
+    public Label getGenderLabel() { return genderLabel; }
+
     private ToggleGroup genderToggleGroup;
     private RadioButton femaleBtn;
     private RadioButton maleBtn;
