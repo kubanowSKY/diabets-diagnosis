@@ -66,19 +66,23 @@ public class Controller {
         });
 
         examinationFormView.getSaveBtn().setOnAction((event) -> {
-            Examination examination = new Examination(
-                    examinationFormView.getDatePicker().getValue(),
-                    examinationFormView.getGhbCheckBox().isSelected(),
-                    Double.parseDouble(examinationFormView.getBloodGlucoseField().getText().toString()),
-                    Double.parseDouble(examinationFormView.getSugarLvlField().getText().toString())
-            );
+            reloadFields();
+            // TODO!!! nie działa
+            if(validateExamination()) {
+                Examination examination = new Examination(
+                        examinationFormView.getDatePicker().getValue(),
+                        examinationFormView.getGhbCheckBox().isSelected(),
+                        Double.parseDouble(examinationFormView.getBloodGlucoseField().getText().toString()),
+                        Double.parseDouble(examinationFormView.getSugarLvlField().getText().toString())
+                );
 
-            patientTableView.getPatientTable().getSelectionModel().getSelectedItem().setExamination(examination);
-            clearExaminationForm();
-            clearPatientForm();
-            patientTableView.getPatientTable().refresh();
-            patientTableView.getPatientTable().getSelectionModel().clearSelection();
-            disableInputMode();
+                patientTableView.getPatientTable().getSelectionModel().getSelectedItem().setExamination(examination);
+                clearExaminationForm();
+                clearPatientForm();
+                patientTableView.getPatientTable().refresh();
+                patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                disableInputMode();
+            }
         });
 
         examinationFormView.getCancelBtn().setOnAction((event) -> {
@@ -179,6 +183,21 @@ public class Controller {
         return valid;
     }
 
+    private boolean validateExamination() {
+        boolean valid = true;
+        String decimalPattern = "([0-9]*)\\.([0-9]*)";
+        if(!examinationFormView.getBloodGlucoseField().getText().matches(decimalPattern)) {
+            examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
+        if(!examinationFormView.getSugarLvlField().getText().matches(decimalPattern)) {
+            examinationFormView.getSugarLvlField().setStyle("-fx-border-color: red;");
+            valid = false;
+        }
+
+        return valid;
+    }
+
     void clearPatientForm() {
         patientFormView.getFirstNameField().setText("");
         patientFormView.getLastNameField().setText("");
@@ -236,5 +255,8 @@ public class Controller {
         patientFormView.getPeselNumberField().setStyle("-fx-border-color: ;");
         patientFormView.getGenderLabel().setStyle("-fx-border-color: ;");
         patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: ;");
+
+        examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: ;");
+        examinationFormView.getSugarLvlField().setStyle("-fx-border-color: ;");
     }
 }
