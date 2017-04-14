@@ -72,6 +72,7 @@ public class Controller {
 
         patientFormView.getCancelBtn().setOnAction((event) -> {
             System.out.println("patientFormView Cancel clicked");
+            reloadFields();
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
             clearPatientForm();
             clearExaminationForm();
@@ -106,6 +107,7 @@ public class Controller {
 
         examinationFormView.getCancelBtn().setOnAction((event) -> {
             System.out.println("examinationFormView Cancel clicked");
+            reloadFields();
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
             clearExaminationForm();
             //clearPatientForm();
