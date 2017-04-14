@@ -82,21 +82,35 @@ public class Controller {
 
         examinationFormView.getSaveBtn().setOnAction((event) -> {
             reloadFields();
-            // TODO!!! nie działa
             if(validateExamination()) {
-                Examination examination = new Examination(
-                        examinationFormView.getDatePicker().getValue(),
-                        examinationFormView.getGhbCheckBox().isSelected(),
-                        Double.parseDouble(examinationFormView.getBloodGlucoseField().getText().toString()),
-                        Double.parseDouble(examinationFormView.getSugarLvlField().getText().toString())
-                );
+                Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
+                if (selected.isExamined() == true) {
+                    selected.getExamination().setExaminationDate(examinationFormView.getDatePicker().getValue());
+                    selected.getExamination().setGhb(examinationFormView.getGhbCheckBox().isSelected());
+                    selected.getExamination().setBloodGlucose(Double.parseDouble(examinationFormView.getBloodGlucoseField().getText().toString()));
+                    selected.getExamination().setSugarLvl(Double.parseDouble(examinationFormView.getSugarLvlField().getText().toString()));
 
-                patientTableView.getPatientTable().getSelectionModel().getSelectedItem().setExamination(examination);
-                clearExaminationForm();
-                clearPatientForm();
-                patientTableView.getPatientTable().refresh();
-                patientTableView.getPatientTable().getSelectionModel().clearSelection();
-                disableInputMode();
+                    clearPatientForm();
+                    clearExaminationForm();
+                    patientTableView.getPatientTable().refresh();
+                    patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                    disableInputMode();
+                }
+                else {
+                    Examination examination = new Examination(
+                            examinationFormView.getDatePicker().getValue(),
+                            examinationFormView.getGhbCheckBox().isSelected(),
+                            Double.parseDouble(examinationFormView.getBloodGlucoseField().getText().toString()),
+                            Double.parseDouble(examinationFormView.getSugarLvlField().getText().toString())
+                    );
+
+                    selected.setExamination(examination);
+                    clearExaminationForm();
+                    clearPatientForm();
+                    patientTableView.getPatientTable().refresh();
+                    patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                    disableInputMode();
+                }
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -162,7 +176,7 @@ public class Controller {
 
             if (patient.isExamined()){
                 examinationFormView.getDatePicker().setValue(patient.getExamination().getExaminationDate());
-                examinationFormView.getGhbCheckBox().setSelected(patient.isExamined());
+                examinationFormView.getGhbCheckBox().setSelected(patient.getExamination().getGhb());
                 examinationFormView.getBloodGlucoseField().setText(patient.getExamination().getBloodGlucose().toString());
                 examinationFormView.getSugarLvlField().setText(patient.getExamination().getSugarLvl().toString());
             }
