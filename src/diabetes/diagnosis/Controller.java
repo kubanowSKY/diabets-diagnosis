@@ -132,6 +132,7 @@ public class Controller {
         patientTableView.getAddBtn().setOnAction((event) -> {
             System.out.println("patientTableView Add clicked");
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
+            reloadFields();
             clearPatientForm();
             clearExaminationForm();
             enableInputMode();
@@ -144,6 +145,7 @@ public class Controller {
             if (selectedIndex >= 0) {
                 patientTableView.getPatientTable().getItems().remove(selectedIndex);
                 patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                reloadFields();
                 clearPatientForm();
                 clearExaminationForm();
             } else {
@@ -228,6 +230,10 @@ public class Controller {
     private boolean validateExamination() {
         boolean valid = true;
         String decimalPattern = "([0-9]*)\\.([0-9]*)";
+        if (examinationFormView.getDatePicker().getValue() == null) {
+            examinationFormView.getDatePicker().setStyle("-fx-border-color: red");
+            valid = false;
+        }
         if(!examinationFormView.getBloodGlucoseField().getText().matches(decimalPattern)) {
             examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: red;");
             valid = false;
@@ -301,6 +307,7 @@ public class Controller {
         patientFormView.getGenderLabel().setStyle("-fx-border-color: ;");
         patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: ;");
 
+        examinationFormView.getDatePicker().setStyle(null);
         examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: ;");
         examinationFormView.getSugarLvlField().setStyle("-fx-border-color: ;");
     }
