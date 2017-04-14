@@ -57,6 +57,7 @@ public class ExaminationFormView extends GridPane {
         dateLabel = new Label("Data:");
         datePicker = new DatePicker();
         datePicker.setShowWeekNumbers(true);
+        datePicker.setId(" - Data\n");
         String pattern = "dd/MM/yyyy";
         StringConverter converter = new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter =
@@ -85,6 +86,7 @@ public class ExaminationFormView extends GridPane {
 
         bloodGlucoseLabel = new Label("Stężenie glukozy we krwi:");
         bloodGlucoseField = new TextField();
+        bloodGlucoseField.setId(" - Stężenie glukozy we krwi\n");
         bloodGlucoseField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -96,6 +98,7 @@ public class ExaminationFormView extends GridPane {
 
         sugarLvlLabel = new Label("Poziom cukru w moczu:");
         sugarLvlField = new TextField();
+        sugarLvlField.setId(" - Poziom cukru w moczu\n");
         sugarLvlField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {

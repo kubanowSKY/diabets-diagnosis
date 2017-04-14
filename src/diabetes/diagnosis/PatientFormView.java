@@ -70,6 +70,7 @@ public class PatientFormView extends GridPane {
     private void createAndLayoutControls() {
         firstNameLabel = new Label("Imię:");
         firstNameField = new TextField();
+        firstNameField.setId(" - Imię\n");
         firstNameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -81,6 +82,7 @@ public class PatientFormView extends GridPane {
 
         lastNameLabel = new Label("Nazwisko:");
         lastNameField = new TextField();
+        lastNameField.setId(" - Nazwisko\n");
         lastNameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -92,6 +94,7 @@ public class PatientFormView extends GridPane {
 
         peselNumberLabel = new Label("PESEL:");
         peselNumberField = new TextField();
+        peselNumberField.setId(" - PESEL\n");
 
         //
         peselNumberField.textProperty().addListener(new ChangeListener<String>() {
@@ -120,6 +123,7 @@ public class PatientFormView extends GridPane {
         }));
 
         genderLabel = new Label("Płeć");
+        genderLabel.setId(" - Płeć\n");
         femaleBtn = new RadioButton("Kobieta");
         femaleBtn.setUserData("K");
         maleBtn = new RadioButton("Mężczyzna");
@@ -130,6 +134,7 @@ public class PatientFormView extends GridPane {
 
         insuranceLabel = new Label("Ubezpieczenie:");
         insuranceComboBox = new ComboBox<String>();
+        insuranceComboBox.setId(" - Ubezpieczenie\n");
         insuranceComboBox.getItems().addAll(
                 "NFZ",
                 "Prywatne",
