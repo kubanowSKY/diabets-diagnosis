@@ -1,5 +1,7 @@
 package diabetes.diagnosis;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 
 /**
@@ -63,9 +65,11 @@ public class Controller {
                 }
             }
             else {
+                String alertInfo = generateAlertInfo(patientFormView.getChildren());
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Wprowadzono złe dane pacjenta.");
+                alert.setContentText(alertInfo);
                 alert.showAndWait();
             }
         //disableInputMode();
@@ -113,9 +117,11 @@ public class Controller {
                 }
             }
             else {
+                String alertInfo = generateAlertInfo(examinationFormView.getChildren());
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Wprowadzono złe dane z wynikami badań.");
+                alert.setContentText(alertInfo);
                 alert.showAndWait();
             }
         });
@@ -301,14 +307,25 @@ public class Controller {
     }
 
     private void reloadFields() {
-        patientFormView.getFirstNameField().setStyle("-fx-border-color: ;");
-        patientFormView.getLastNameField().setStyle("-fx-border-color: ;");
-        patientFormView.getPeselNumberField().setStyle("-fx-border-color: ;");
-        patientFormView.getGenderLabel().setStyle("-fx-border-color: ;");
-        patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: ;");
+        patientFormView.getFirstNameField().setStyle(null);
+        patientFormView.getLastNameField().setStyle(null);
+        patientFormView.getPeselNumberField().setStyle(null);
+        patientFormView.getGenderLabel().setStyle(null);
+        patientFormView.getInsuranceComboBox().setStyle(null);
 
         examinationFormView.getDatePicker().setStyle(null);
-        examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: ;");
-        examinationFormView.getSugarLvlField().setStyle("-fx-border-color: ;");
+        examinationFormView.getBloodGlucoseField().setStyle(null);
+        examinationFormView.getSugarLvlField().setStyle(null);
+    }
+
+    private String generateAlertInfo(ObservableList<Node> list) {
+        StringBuilder alertInfo = new StringBuilder();
+        alertInfo.append("Popraw:\n\n");
+        for (Node child : list) {
+            if (child.getStyle() != "") {
+                alertInfo.append(child.getId());
+            }
+        }
+        return alertInfo.toString();
     }
 }
