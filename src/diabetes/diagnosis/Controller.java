@@ -36,10 +36,11 @@ public class Controller {
                     selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
                     selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
 
-                    clearPatientForm();
-                    clearExaminationForm();
-                    patientTableView.getPatientTable().getSelectionModel().clearSelection();
-                    disableInputMode();
+                    //clearPatientForm();
+                    //clearExaminationForm();
+                    patientTableView.getPatientTable().refresh();
+                    //patientTableView.getPatientTable().getSelectionModel().clearSelection();
+                    //disableInputMode();
                 }
                 else {
                     Patient patient = new Patient(
