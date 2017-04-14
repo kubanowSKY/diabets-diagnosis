@@ -235,7 +235,7 @@ public class Controller {
 
     private boolean validateExamination() {
         boolean valid = true;
-        String decimalPattern = "([0-9]*)\\.([0-9]*)";
+        String decimalPattern = "[0-9]*\\.?[0-9]+";
         if (examinationFormView.getDatePicker().getValue() == null) {
             examinationFormView.getDatePicker().setStyle("-fx-border-color: red");
             valid = false;
