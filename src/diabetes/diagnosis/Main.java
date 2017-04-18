@@ -23,11 +23,27 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Rejestracja wyników badań");
 
+		PatientFormView patientFormView = new PatientFormView();
+		ExaminationFormView examinationFormView = new ExaminationFormView();
+		PatientTableView patientTableView = new PatientTableView();
+
+		PatientList patientsList = new PatientList();
+		Controller controller = new Controller(examinationFormView,
+				patientFormView, patientTableView, patientsList);
+
+		BorderPane root = initializeGUI(patientFormView, examinationFormView, patientTableView);
+
+		primaryStage.setScene(new Scene(root, 1000, 600));
+		primaryStage.show();
+	}
+
+	private BorderPane initializeGUI(PatientFormView patientFormView,
+									 ExaminationFormView examinationFormView,
+									 PatientTableView patientTableView) {
 		BorderPane root = new BorderPane();
 		VBox topContainer = new VBox();
 		MenuBar mainMenu = new MenuBar();
 
-		//Declare sub-menus and add to main menu.
 		Menu menu = new Menu("Aplikacja");
 		MenuItem exit = new MenuItem("Zamknij");
 		exit.setAccelerator(KeyCodeCombination.keyCombination("ALT+F4"));
@@ -47,12 +63,10 @@ public class Main extends Application {
 
 		SplitPane splitPane1 = new SplitPane();
 		splitPane1.setOrientation(Orientation.HORIZONTAL);
-		//System.out.print(splitPane1.getPrefWidth());
-		//splitPane1.setPrefWidth(600);
 		AnchorPane apl = new AnchorPane();
 		VBox vb1 = new VBox();
-		PatientFormView patientFormView = new PatientFormView();
-		ExaminationFormView examinationFormView = new ExaminationFormView();
+		//PatientFormView patientFormView = new PatientFormView();
+		//ExaminationFormView examinationFormView = new ExaminationFormView();
 		vb1.getChildren().addAll(patientFormView, examinationFormView);
 		vb1.setSpacing(100);
 		vb1.setVgrow(patientFormView, Priority.ALWAYS);
@@ -63,11 +77,8 @@ public class Main extends Application {
 		apl.setRightAnchor(vb1, 0.0);
 		apl.setLeftAnchor(vb1, 0.0);
 		apl.setBottomAnchor(vb1, 0.0);
-		//System.out.print(apl.getPrefWidth());
-		//System.out.print(apl.getMinWidth());
-		//apl.setMinWidth(300);
 		AnchorPane apr = new AnchorPane();
-		PatientTableView patientTableView = new PatientTableView();
+		//PatientTableView patientTableView = new PatientTableView();
 		apr.getChildren().add(patientTableView);
 		apr.setTopAnchor(patientTableView, 0.0);
 		apr.setRightAnchor(patientTableView, 0.0);
@@ -79,14 +90,8 @@ public class Main extends Application {
 		ap.setRightAnchor(splitPane1, 0.0);
 		ap.setLeftAnchor(splitPane1, 0.0);
 		ap.setBottomAnchor(splitPane1, 0.0);
-		//splitPane1.setResizableWithParent(ap, false);
 		splitPane1.setDividerPosition(0, 0.45);
 
-		PatientList patientsList = new PatientList();
-		Controller controller = new Controller(examinationFormView,
-												patientFormView, patientTableView, patientsList);
-		primaryStage.setScene(new Scene(root, 1000, 600));
-		//primaryStage.setFullScreen(true);
-		primaryStage.show();
+		return root;
 	}
 }
