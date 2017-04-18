@@ -14,6 +14,14 @@ public class Controller {
     private PatientTableView patientTableView;
     private PatientList patientList;
 
+    /**
+     * Konstruktor kontrolera.
+     *
+     * @param examinationFormView   element graficzny odpowiadający za formularz badania
+     * @param patientFormView       element graficzny odpowiadający za formularz pacjenta
+     * @param patientTableView      element graficzny odpowiadający za listę pacjentów
+     * @param patientList           lista przechowująca dane pacjentów
+     */
     public Controller(ExaminationFormView examinationFormView,
                       PatientFormView patientFormView,
                       PatientTableView patientTableView,
@@ -23,10 +31,15 @@ public class Controller {
         this.patientTableView = patientTableView;
         this.patientList = patientList;
 
+        initializeHandlers();
         patientTableView.getAddBtn().requestFocus();
         disableInputMode();
+    }
 
-        //Buttons handlers initializations
+    // Metoda inicjalizująca handlery przycisków.
+    private void initializeHandlers() {
+
+        // zapisuje dane pacjenta
         patientFormView.getSaveBtn().setOnAction((event) -> {
             reloadFields();
             if (validateData()) {
@@ -38,11 +51,7 @@ public class Controller {
                     selected.setPeselNumber(patientFormView.getPeselNumberField().getText().toString());
                     selected.setInsurance(patientFormView.getInsuranceComboBox().getSelectionModel().getSelectedItem().toString());
 
-                    //clearPatientForm();
-                    //clearExaminationForm();
                     patientTableView.getPatientTable().refresh();
-                    //patientTableView.getPatientTable().getSelectionModel().clearSelection();
-                    //disableInputMode();
                 }
                 else {
                     Patient patient = new Patient(
@@ -59,9 +68,6 @@ public class Controller {
                     patientTableView.getPatientTable().requestFocus();
                     patientTableView.getPatientTable().getSelectionModel().selectLast();
                     patientTableView.getPatientTable().getFocusModel().focus(-1);
-
-                    //clear form after addition
-                    //clearPatientForm();
                 }
             }
             else {
@@ -72,9 +78,9 @@ public class Controller {
                 alert.setContentText(alertInfo);
                 alert.showAndWait();
             }
-        //disableInputMode();
         });
 
+        // czyści formularz pacjenta
         patientFormView.getCancelBtn().setOnAction((event) -> {
             System.out.println("patientFormView Cancel clicked");
             reloadFields();
@@ -84,6 +90,7 @@ public class Controller {
             disableInputMode();
         });
 
+        // zapisuje wyniki badania
         examinationFormView.getSaveBtn().setOnAction((event) -> {
             reloadFields();
             if(validateExamination()) {
@@ -126,15 +133,15 @@ public class Controller {
             }
         });
 
+        // czyści formularz badania
         examinationFormView.getCancelBtn().setOnAction((event) -> {
             System.out.println("examinationFormView Cancel clicked");
             reloadFields();
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
             clearExaminationForm();
-            //clearPatientForm();
-            //disableInputMode();
         });
 
+        // przełącza formularz pacjena w tryb dodawania nowego pacjenta
         patientTableView.getAddBtn().setOnAction((event) -> {
             System.out.println("patientTableView Add clicked");
             patientTableView.getPatientTable().getSelectionModel().clearSelection();
@@ -144,6 +151,7 @@ public class Controller {
             enableInputMode();
         });
 
+        // usuwa pacjenta z listy pacjentów
         patientTableView.getDeleteBtn().setOnAction((event) -> {
             System.out.println("patientTableView Delete clicked");
             disableInputMode();
@@ -154,21 +162,18 @@ public class Controller {
                 reloadFields();
                 clearPatientForm();
                 clearExaminationForm();
-            } else {
-                // popup?
-            }
+            } else {}
         });
 
-        //observe table
+        // ładuje dane pacjenta do formularzy po jego zaznaczeniu
         patientTableView.getPatientTable().getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showPatientData(newValue));
-
     }
 
+    // ładuje dane pacjenta do formularzy
     private void showPatientData(Patient patient) {
         if (patient != null) {
             enableInputMode();
-            // Fill the labels with info from the person object.
             patientFormView.getFirstNameField().setText(patient.getFirstName());
             patientFormView.getLastNameField().setText(patient.getLastName());
             patientFormView.getPeselNumberField().setText(patient.getPeselNumber());
@@ -192,32 +197,30 @@ public class Controller {
                 System.out.println("Niezbadany");
             }
 
-        } else {
-            //clearPatientForm();
-            //clearExaminationForm();
-        }
+        } else {}
     }
 
+    // sprawdza, czy wprowadzone dane pacjenta są poprawne
     private boolean validateData() {
         boolean valid = true;
         if(patientFormView.getFirstNameField().getLength() == 0) {
-            patientFormView.getFirstNameField().setStyle("-fx-border-color: red;");
+            patientFormView.getFirstNameField().setStyle("-fx-border-color: red");
             valid = false;
         }
         if(patientFormView.getLastNameField().getLength() == 0) {
-            patientFormView.getLastNameField().setStyle("-fx-border-color: red;");
+            patientFormView.getLastNameField().setStyle("-fx-border-color: red");
             valid = false;
         }
         if(patientFormView.getPeselNumberField().getLength() != 11) {
-            patientFormView.getPeselNumberField().setStyle("-fx-border-color: red;");
+            patientFormView.getPeselNumberField().setStyle("-fx-border-color: red");
             valid = false;
         }
         if(!(patientFormView.getMaleBtn().isSelected() || patientFormView.getFemaleBtn().isSelected())) {
-            patientFormView.getGenderLabel().setStyle("-fx-border-color: red;");
+            patientFormView.getGenderLabel().setStyle("-fx-border-color: red");
             valid = false;
         }
         if(patientFormView.getInsuranceComboBox().getSelectionModel().isEmpty()) {
-            patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: red;");
+            patientFormView.getInsuranceComboBox().setStyle("-fx-border-color: red");
             valid = false;
         }
         for(Patient patient: patientList.getPatientsList()) {
@@ -225,7 +228,7 @@ public class Controller {
                 Patient selected = patientTableView.getPatientTable().getSelectionModel().getSelectedItem();
                 if(selected != null && patient.getPeselNumber().equals(selected.getPeselNumber()))
                     continue;
-                patientFormView.getPeselNumberField().setStyle("-fx-border-color: red;");
+                patientFormView.getPeselNumberField().setStyle("-fx-border-color: red");
                 valid = false;
             }
         }
@@ -233,6 +236,7 @@ public class Controller {
         return valid;
     }
 
+    // sprzawdza, czy wprowadzone wyniki badań są poprawne
     private boolean validateExamination() {
         boolean valid = true;
         String decimalPattern = "[0-9]*\\.?[0-9]+";
@@ -241,17 +245,18 @@ public class Controller {
             valid = false;
         }
         if(!examinationFormView.getBloodGlucoseField().getText().matches(decimalPattern)) {
-            examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: red;");
+            examinationFormView.getBloodGlucoseField().setStyle("-fx-border-color: red");
             valid = false;
         }
         if(!examinationFormView.getSugarLvlField().getText().matches(decimalPattern)) {
-            examinationFormView.getSugarLvlField().setStyle("-fx-border-color: red;");
+            examinationFormView.getSugarLvlField().setStyle("-fx-border-color: red");
             valid = false;
         }
 
         return valid;
     }
 
+    // czyści formularz pacjenta
     void clearPatientForm() {
         patientFormView.getFirstNameField().setText("");
         patientFormView.getLastNameField().setText("");
@@ -260,6 +265,7 @@ public class Controller {
         patientFormView.getInsuranceComboBox().getSelectionModel().clearSelection();
     }
 
+    // czyści formularz badania
     void clearExaminationForm() {
         examinationFormView.getDatePicker().setValue(null);
         examinationFormView.getGhbCheckBox().setSelected(false);
@@ -267,6 +273,7 @@ public class Controller {
         examinationFormView.getSugarLvlField().setText("");
     }
 
+    // włącza możliwość pisania w formularzach
     void enableInputMode() {
         patientFormView.getFirstNameField().setDisable(false);
         patientFormView.getLastNameField().setDisable(false);
@@ -288,6 +295,7 @@ public class Controller {
         }
     }
 
+    // wyłącza możliwość pisania w formularzach
     void disableInputMode() {
         patientFormView.getFirstNameField().setDisable(true);
         patientFormView.getLastNameField().setDisable(true);
@@ -306,6 +314,7 @@ public class Controller {
         examinationFormView.getCancelBtn().setDisable(true);
     }
 
+    // przeładowuje pola
     private void reloadFields() {
         patientFormView.getFirstNameField().setStyle(null);
         patientFormView.getLastNameField().setStyle(null);
@@ -318,6 +327,12 @@ public class Controller {
         examinationFormView.getSugarLvlField().setStyle(null);
     }
 
+    /**
+     * Metoda sprawdza, które dane w formularzu zostały źle wprowadzone.
+     *
+     * @param list  lista elementów, z których zbudowany jest dany panel
+     * @return      string zawierający sformatowaną listę błędnie wprowadzonych danych
+     */
     private String generateAlertInfo(ObservableList<Node> list) {
         StringBuilder alertInfo = new StringBuilder();
         alertInfo.append("Popraw:\n\n");
