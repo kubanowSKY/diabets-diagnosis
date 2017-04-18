@@ -173,6 +173,7 @@ public class Controller {
     // ładuje dane pacjenta do formularzy
     private void showPatientData(Patient patient) {
         if (patient != null) {
+            reloadFields();
             enableInputMode();
             patientFormView.getFirstNameField().setText(patient.getFirstName());
             patientFormView.getLastNameField().setText(patient.getLastName());
