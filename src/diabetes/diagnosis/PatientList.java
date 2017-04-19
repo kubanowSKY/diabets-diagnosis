@@ -8,12 +8,15 @@ import javafx.collections.ObservableList;
  */
 public class PatientList {
 
+    // Lista przechowująca dane pacjentów.
     private ObservableList<Patient> patientList;
 
+    // Konstruktor inicjalizujący listę pacjentów.
     public PatientList() {
         patientList = FXCollections.observableArrayList();
     }
 
+    // Metoda zwracająca listę pacjentów.
     public ObservableList<Patient> getPatientsList() {
         return patientList;
     }
