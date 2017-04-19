@@ -71,7 +71,7 @@ public class PatientFormView extends GridPane {
     public Button getCancelBtn() { return cancelBtn; }
 
     private Patient patient;
-    
+
     public PatientFormView() {
 
         numberFormat = new DecimalFormat("#.0");
@@ -158,7 +158,8 @@ public class PatientFormView extends GridPane {
     }
 
     private void setProperties() {
-        // TODO Patryk
+        // Ograniczenie listenera do pola firstName w celu uniemożliwienia
+        // wpisania znaków numerycznych
         firstNameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -168,7 +169,8 @@ public class PatientFormView extends GridPane {
             }
         });
 
-        // TODO Patryk
+        // Ograniczenie listenera do pola lastName w celu uniemożliwienia
+        // wpisania znaków numerycznych
         lastNameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -178,7 +180,8 @@ public class PatientFormView extends GridPane {
             }
         });
 
-        // TODO Patryk
+        // Ograniczenie listenera do pola peselNumber w celu uniemożliwienia
+        // wpisania więcej niż 11 znaków
         peselNumberField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -189,7 +192,7 @@ public class PatientFormView extends GridPane {
             }
         });
 
-        // TODO Patryk
+        // Ustawienie formatowania tekstu w celu wpisywania jedynie znaków numerycznych
         peselNumberField.setTextFormatter(new TextFormatter<>(c -> {
             if (c.getControlNewText().isEmpty()) { return c; }
             ParsePosition parsePosition = new ParsePosition( 0 );

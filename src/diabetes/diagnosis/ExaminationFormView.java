@@ -143,7 +143,8 @@ public class ExaminationFormView extends GridPane {
         };
         datePicker.setConverter(converter);
 
-        // TODO Patryk
+        // Ograniczenie listenera do pola bloodGlucose w celu uniemożliwienia
+        // wpisania liter
         bloodGlucoseField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -153,7 +154,7 @@ public class ExaminationFormView extends GridPane {
             }
         });
 
-        // TODO Patryk
+        // Ograniczenie listenera do pola sugarLvl w celu uniemożliwienia wpisania liter
         sugarLvlField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
